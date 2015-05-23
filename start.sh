@@ -10,8 +10,8 @@ echo "access_key=$ACCESS_KEY" >> /root/.s3cfg
 echo "secret_key=$SECRET_KEY" >> /root/.s3cfg
 
 if [[ "$1" == 'no-cron' ]]; then
-    exec /usr/bin/s3cmd sync "$DATA_PATH" "$S3_PATH"
+    exec /usr/bin/s3cmd --delete-removed sync "$DATA_PATH" "$S3_PATH" > /var/log/cron.log 2>&1
 else
-    echo "$CRON_SCHEDULE /usr/bin/s3cmd --delete-removed sync \"$DATA_PATH\" \"$S3_PATH\"" | crontab -
+    echo "$CRON_SCHEDULE /usr/bin/s3cmd --delete-removed sync \"$DATA_PATH\" \"$S3_PATH\" > /var/log/cron.log 2>&1" | crontab -
     exec cron -f
 fi

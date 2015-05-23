@@ -7,7 +7,9 @@ RUN apt-get update && \
 
 ADD s3cfg /root/.s3cfg
 
+RUN touch /var/log/cron.log
+
 ADD start.sh /start.sh
 RUN chmod +x /start.sh
 
-CMD ["/start.sh"]
+CMD /start.sh && tail -f /var/log/cron.log
